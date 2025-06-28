@@ -1,55 +1,73 @@
-import React, { useState } from "react";
+import './App.css';
+import { useState } from 'react';
+
 
 function App() {
-  const [username, setUsername] = useState("");
+
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [invalid, setInvalid] = useState(false);
+  const [login, setLogin] = useState(false);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // console.log("submit >> ", e.target.elements);
 
-    // Check if fields are empty
-    if (!username || !password) {
-      setMessage("Please fill in both fields.");
-      return;
+    if(username === "user" && password === "password"){
+      setLogin(true);
     }
-
-    // Validate credentials
-    if (username === "user" && password === "password") {
-      setMessage("Welcome, user!");
-    } else {
-      setMessage("Invalid username or password");
+    else {
+      setInvalid(true);
     }
-  };
+  }
 
   return (
-    <div>
-      <h1>Login Page</h1>
-      {message && <p>{message}</p>}
+    <div className="App">
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+        <h1>Login Page</h1>
+        
+        {
+          login ? (<p>Welcome, user</p>) : (
+                <>
+                
 
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+                  {
+                    invalid && <p>Invalid username or password</p>
+                  }
 
-        <button type="submit">Submit</button>
-      </form>
+              <form name='loginForm'
+              onSubmit={handleSubmit}
+              >
+
+                <label for="username" >Username:</label>
+                <input id='username' placeholder='Username' required type='text' 
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
+                />
+
+                <br />
+
+                <label for="password">Password:</label>
+                <input id='password' placeholder='Password' required type='password' 
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                }}
+                />
+
+                <br />
+
+                <button
+                type='submit'
+                >Submit</button>
+              </form>
+              </>
+          )
+        }
+
     </div>
   );
 }
